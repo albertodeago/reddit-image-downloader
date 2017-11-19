@@ -15,8 +15,8 @@ function download(uri, filename, callback){
 
 	let found = false;
 	fs.readdirSync(config.other.folderName).forEach(file => {
-		console.log("file", file);
 		if(file === filename) {
+			console.log("file " + filename + " already downloaded");
 			found = true;
 			return false;
 		}
