@@ -67,7 +67,7 @@ redditClient.getMe().getUpvotedContent().fetchAll().then( results => {
 		downloadImageFromPost();
 	}
 
-	const availableExtensions = ['jpg','jpeg','png','gif','bmp'];
+	const availableExtensions = ['jpg','jpeg','png','gif', 'gifv','bmp'];
 	function canBeImage(str) {
 		let fileExt = str.split('.').pop();
 		fileExt = fileExt.split('?')[0];
