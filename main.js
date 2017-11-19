@@ -1,5 +1,6 @@
 var snoowrap = require('snoowrap'),
-    fs = require('fs'),
+	fs = require('fs'),
+	path = require('path'),
 	request = require('request'),
 	sanitize = require("sanitize-filename");
 	
@@ -52,7 +53,7 @@ const redditClient = new snoowrap({
 });
 
 redditClient.getMe().getUpvotedContent().fetchAll().then( results => {
-	
+
 	results = filterBySubReddit(results, config.reddit.subReddits).reverse();
 
 	let counter = 0;
@@ -66,12 +67,23 @@ redditClient.getMe().getUpvotedContent().fetchAll().then( results => {
 		downloadImageFromPost();
 	}
 
+	const availableExtensions = ['jpg','jpeg','png','gif','bmp'];
+	function canBeImage(str) {
+		let fileExt = str.split('.').pop();
+		fileExt = fileExt.split('?')[0];
+
+		if(fileExt && (availableExtensions.indexOf(fileExt) > -1))
+			return fileExt;
+		else 
+			return false;
+	}
+
 	function downloadImageFromPost() {
 		let post = results[counter];
-		let lastThreeUrlDigit = post.url.substr(post.url.length -3).toLowerCase();
-		if(lastThreeUrlDigit === 'jpg' || lastThreeUrlDigit === 'jpeg') {
+		let fileExt = canBeImage(post.url);
+		if(fileExt) {
 			let sanitizedTitle = sanitize(post.title);
-			download(post.url, sanitizedTitle + '.jpg', () => {
+			download(post.url, sanitizedTitle + '.' + fileExt, () => {
 				nextOrQuit();
 			});
 		}
