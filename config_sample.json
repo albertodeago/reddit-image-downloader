@@ -1,0 +1,13 @@
+{
+    "reddit": {
+        "username": "",
+        "password": "",
+        "clientId": "",
+        "clientSecret": "",
+        "userAgent": "",
+        "subReddits": ["list of subreddits (e.g. ['food', 'eathporn']"]
+    },
+    "other": {
+        "folderName": "./reddit-pictures/"
+    }
+}
