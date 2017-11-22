@@ -82,6 +82,8 @@ redditClient.getMe().getUpvotedContent().fetchAll().then( results => {
 		let post = results[counter];
 		let fileExt = canBeImage(post.url);
 		if(fileExt) {
+			if(post.title.length > 25)
+				post.title = post.title.substr(0, 75);
 			let sanitizedTitle = sanitize(post.title);
 			download(post.url, sanitizedTitle + '.' + fileExt, () => {
 				nextOrQuit();
