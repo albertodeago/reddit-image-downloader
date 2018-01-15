@@ -12,10 +12,14 @@ function filterBySubReddit(results, subReddits) {
 	});
 };
 
-function download(uri, filename, callback){
+function download(uri, filename, subreddit, callback){
 
 	let found = false;
-	fs.readdirSync(config.other.folderName).forEach(file => {
+	var dir = config.other.folderName + subreddit;
+	if (!fs.existsSync(dir)){
+		fs.mkdirSync(dir);
+	}
+	fs.readdirSync(dir).forEach(file => {
 		if(file === filename) {
 			console.log("file " + filename + " already downloaded");
 			found = true;
@@ -29,7 +33,7 @@ function download(uri, filename, callback){
 				console.log('content-type:', res.headers['content-type']);
 				console.log('content-length:', res.headers['content-length']);
 				
-				request(uri).pipe(fs.createWriteStream(config.other.folderName + filename)).on('close', callback);
+				request(uri).pipe(fs.createWriteStream(dir + filename)).on('close', callback);
 			
 				console.log('downloaded ' + filename);
 			}
@@ -83,9 +87,9 @@ redditClient.getMe().getUpvotedContent().fetchAll().then( results => {
 		let fileExt = canBeImage(post.url);
 		if(fileExt) {
 			if(post.title.length > 25)
-				post.title = post.title.substr(0, 75);
+				post.title = post.title.substr(0, 150);
 			let sanitizedTitle = sanitize(post.title);
-			download(post.url, sanitizedTitle + '.' + fileExt, () => {
+			download(post.url, sanitizedTitle + '.' + fileExt, post.subreddit.display_name+'/', () => {
 				nextOrQuit();
 			});
 		}
