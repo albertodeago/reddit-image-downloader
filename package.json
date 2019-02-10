@@ -4,9 +4,9 @@
   "description": "a script to download upvoted images from reddit ",
   "main": "main.js",
   "dependencies": {
-    "request": "^2.83.0",
+    "request": "^2.88.0",
     "sanitize-filename": "^1.6.1",
-    "snoowrap": "^1.14.2"
+    "snoowrap": "^1.15.2"
   },
   "devDependencies": {},
   "scripts": {
